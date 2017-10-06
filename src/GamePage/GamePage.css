@@ -1,0 +1,19 @@
+.nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.back {
+	cursor: pointer;
+}
+
+.players {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.players * {
+	margin: 0 10px 0 10px;
+}

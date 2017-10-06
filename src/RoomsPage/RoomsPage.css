@@ -1,0 +1,15 @@
+.logout {
+	cursor: pointer;
+}
+
+.nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.panel-body {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
