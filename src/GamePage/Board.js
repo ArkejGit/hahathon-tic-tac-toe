@@ -16,6 +16,7 @@ const Board = (props) => {
 				x={i}
 				y={j}
 				clickCell={props.clickCell}
+				id={props.gameData.id}
 				/>							
 				)
 			})

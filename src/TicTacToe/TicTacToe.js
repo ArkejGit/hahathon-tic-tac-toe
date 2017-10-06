@@ -137,10 +137,10 @@ export default class TicTacToe extends React.Component {
 		.then(function(res){ return res.json() })
 		.then(function(data){
 			this.setState({
-			gameData: data,
+			gameData: data.game,
 			duringGame: true,
 			});
-		})
+		}.bind(this));
 	}
 
 	handleShowingRoom = id => {
@@ -166,8 +166,21 @@ export default class TicTacToe extends React.Component {
 		this.getGames();
 	}
 
-	handleClickingCell = (x,y) => {
-		console.log(x,y);
+	handleClickingCell = (id, x,y) => {
+	  	fetch(this.state.url + 'games/' + id + '/moves/', { 
+			  method: 'POST', 
+			  mode: 'cors', 
+			  credentials: 'include',
+			  body: JSON.stringify({x: x , y: y}),
+			  headers: {
+			    'Accept': 'application/json, text/plain, */*',
+			    'Content-Type': 'application/json'
+			  },
+			})
+			.then(function(res){ return res.json() })
+			.then(function(data){
+				console.log(data)
+			})
 	}
 
 	handleClickingAPI = (id, action) => {

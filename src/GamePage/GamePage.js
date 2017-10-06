@@ -27,7 +27,7 @@ const GamePage = (props) => {
 				}) }
 			</div>
 			<div>
-			
+				
 			</div>
 			<div>
 			{  (game.players.length < 2) &&
