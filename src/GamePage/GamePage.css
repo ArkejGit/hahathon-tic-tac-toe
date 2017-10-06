@@ -8,12 +8,12 @@
 	cursor: pointer;
 }
 
-.players {
+.players, .buttons {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 }
 
-.players * {
+.players *, .buttons * {
 	margin: 0 10px 0 10px;
 }

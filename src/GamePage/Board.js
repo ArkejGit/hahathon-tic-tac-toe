@@ -13,6 +13,9 @@ const Board = (props) => {
 				return(
 				<Cell 
 				content={cell}
+				x={i}
+				y={j}
+				clickCell={props.clickCell}
 				/>							
 				)
 			})

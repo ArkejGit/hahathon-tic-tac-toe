@@ -27,7 +27,7 @@ const GamePage = (props) => {
 				}) }
 			</div>
 			<div>
-			VS
+			
 			</div>
 			<div>
 			{  (game.players.length < 2) &&
@@ -37,12 +37,25 @@ const GamePage = (props) => {
 			}
 			</div>
 			</div>
-			<br/><br/>
+			<br/>
+			<div className="buttons">
+				<button onClick={() => props.clickAPI(game.id, 'start') }
+				type="button" className="btn btn-primary">Start
+				</button>
+				<button onClick={() => props.clickAPI(game.id, 'leave') }
+				type="button" className="btn btn-secondary">Leave
+				</button>
+				<button onClick={() => props.clickAPI(game.id, 'surrender') }
+				type="button" className="btn btn-danger">Surrender
+				</button>
+			</div>
+			<br/>
 			<div className="container">
 			<Board 
 			gameData={game}
+			clickCell={props.clickCell}
 			/>
-
+			<br/><br/>
 			</div>
 		</div>
 	)
