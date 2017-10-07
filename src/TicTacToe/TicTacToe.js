@@ -27,33 +27,42 @@ export default class TicTacToe extends React.Component {
     this.setState({password: e.target.value});
   }
 
-  handleRegister = e => {
-  	if (this.state.login === '' && this.state.password === '') return;
-  	fetch(this.state.url + 'user/register/', { 
-	  method: 'POST', 
+  fetchGET = endpoint => {
+  	return fetch(this.state.url + endpoint, { 
+	  method: 'GET', 
 	  mode: 'cors', 
-	  credentials: 'include', 
-	  body: JSON.stringify({ username: this.state.login, password: this.state.password}),
+	  credentials: 'include',
 	  headers: {
 	    'Accept': 'application/json, text/plain, */*',
 	    'Content-Type': 'application/json'
 	  },
 	})
-	.then(function(res){ console.log(res.json()) })
+  }
+
+  fetchPOST = (endpoint, body) => {
+  	return fetch(this.state.url + endpoint, { 
+	  method: 'POST', 
+	  mode: 'cors', 
+	  credentials: 'include', 
+	  body: body,
+	  headers: {
+	    'Accept': 'application/json, text/plain, */*',
+	    'Content-Type': 'application/json'
+	  },
+	}) 	
+  }
+
+  handleRegister = e => {
+  	if (this.state.login === '' && this.state.password === '') return;
+  	this.fetchPOST('user/register/',
+  		JSON.stringify({ username: this.state.login, password: this.state.password}))
+  	.then(function(res){ console.log(res.json()) })
   }
 
   handleLogin = e => {
   	if (this.state.login === '' && this.state.password === '') return;
-  	fetch(this.state.url + 'user/login/', { 
-	  method: 'POST', 
-	  mode: 'cors', 
-	  credentials: 'include', 
-	  body: JSON.stringify({ username: this.state.login, password: this.state.password}),
-	  headers: {
-	    'Accept': 'application/json, text/plain, */*',
-	    'Content-Type': 'application/json'
-	  },
-	})
+  	this.fetchPOST('user/login/',
+  		JSON.stringify({ username: this.state.login, password: this.state.password}))  	
 	.then(function(res){ return res.json() })
 	.then(function(data){ 
 		this.setState({
@@ -64,16 +73,7 @@ export default class TicTacToe extends React.Component {
   }
 
   handleLogOut = e => {
-  	  fetch(this.state.url + 'user/logout/', { 
-	  method: 'POST', 
-	  mode: 'cors', 
-	  credentials: 'include', 
-	  body: {},
-	  headers: {
-	    'Accept': 'application/json, text/plain, */*',
-	    'Content-Type': 'application/json'
-	  },
-	})
+  	this.fetchPOST('user/logout/', {})  	  
 	.then(function(data){ 
 		this.setState({
 			usersData: {},
@@ -83,35 +83,18 @@ export default class TicTacToe extends React.Component {
   }
 
   handleCreatingNewRoom = e => {
-	fetch(this.state.url + 'games/', { 
-		  method: 'POST', 
-		  mode: 'cors', 
-		  credentials: 'include',
-		  body: {},
-		  headers: {
-		    'Accept': 'application/json, text/plain, */*',
-		    'Content-Type': 'application/json'
-		  },
-		})
-		.then(function(res){ return res.json() })
-		.then(function(data){
-			this.setState({
-				gameData: data,
-				duringGame: true
-			});
-		}.bind(this));
+  	this.fetchPOST('games/', {})
+	.then(function(res){ return res.json() })
+	.then(function(data){
+		this.setState({
+			gameData: data,
+			duringGame: true
+		});
+	}.bind(this));
   }
 
   getGames() {
-  	fetch(this.state.url + 'games/', { 
-	  method: 'GET', 
-	  mode: 'cors', 
-	  credentials: 'include',
-	  headers: {
-	    'Accept': 'application/json, text/plain, */*',
-	    'Content-Type': 'application/json'
-	  },
-	})
+  	this.fetchGET('games/')
 	.then(function(res){ return res.json() })
 	.then(function(data){
 		this.setState({
@@ -123,17 +106,8 @@ export default class TicTacToe extends React.Component {
 	}.bind(this));
   }
 
-  handleJoiningGame = id => {
-  	fetch(this.state.url + 'games/' + id + '/join/', { 
-		  method: 'POST', 
-		  mode: 'cors', 
-		  credentials: 'include',
-		  body: {},
-		  headers: {
-		    'Accept': 'application/json, text/plain, */*',
-		    'Content-Type': 'application/json'
-		  },
-		})
+	handleJoiningGame = id => {
+		this.fetchPOST('games/' + id + '/join/', {})  	
 		.then(function(res){ return res.json() })
 		.then(function(data){
 			this.setState({
@@ -144,15 +118,7 @@ export default class TicTacToe extends React.Component {
 	}
 
 	handleShowingRoom = id => {
-		fetch(this.state.url + 'games/' + id, { 
-		  method: 'GET', 
-		  mode: 'cors', 
-		  credentials: 'include',
-		  headers: {
-		    'Accept': 'application/json, text/plain, */*',
-		    'Content-Type': 'application/json'
-		  },
-		})
+		this.fetchGET('games/' + id)		
 		.then(function(res){ return res.json() })
 		.then(function(data){
 			this.setState({
@@ -167,37 +133,24 @@ export default class TicTacToe extends React.Component {
 	}
 
 	handleClickingCell = (id, x,y) => {
-	  	fetch(this.state.url + 'games/' + id + '/moves/', { 
-			  method: 'POST', 
-			  mode: 'cors', 
-			  credentials: 'include',
-			  body: JSON.stringify({x: x , y: y}),
-			  headers: {
-			    'Accept': 'application/json, text/plain, */*',
-			    'Content-Type': 'application/json'
-			  },
-			})
-			.then(function(res){ return res.json() })
-			.then(function(data){
-				console.log(data)
-			})
+		this.fetchPOST('games/' + id + '/moves/',
+		JSON.stringify({x: x , y: y}))	  	
+		.then(function(res){ return res.json() })
+		.then(function(data){
+			console.log(data)
+		})
 	}
 
 	handleClickingAPI = (id, action) => {
-	  	fetch(this.state.url + 'games/' + id + '/' + action + '/', { 
-			  method: 'POST', 
-			  mode: 'cors', 
-			  credentials: 'include',
-			  body: {},
-			  headers: {
-			    'Accept': 'application/json, text/plain, */*',
-			    'Content-Type': 'application/json'
-			  },
-			})
-			.then(function(res){ return res.json() })
-			.then(function(data){
-				console.log(data)
-			})
+		this.fetchPOST('games/' + id + '/' + action + '/', {})	  	
+		.then(function(res){ return res.json() })
+		.then(function(data){
+			console.log(data)
+		})
+	}
+
+	handleShowingPlayerModal = () => {
+		
 	}
 
   render() {
@@ -220,6 +173,7 @@ export default class TicTacToe extends React.Component {
   			games={this.state.games}
   			clickJoinGame={this.handleJoiningGame}
   			clickShowRoom={this.handleShowingRoom}
+  			clickShowPlayerModal={this.handleShowingPlayerModal}
   			/>  		
   		}
 
