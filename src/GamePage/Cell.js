@@ -4,12 +4,7 @@ const Cell = (props) => {
 
 	return (
 		<div className="cell" onClick={() => props.clickCell(props.id, props.x, props.y)}>
-		{ (props.cell === 'o') &&
-			'O'
-		}
-		{ (props.cell === 'g') &&
-			'X'
-		}
+		{props.content}
 		</div>
 	)
 }

@@ -42,7 +42,10 @@ const GamePage = (props) => {
 				<button onClick={() => props.clickAPI(game.id, 'start') }
 				type="button" className="btn btn-primary">Start
 				</button>
-				<button onClick={() => props.clickAPI(game.id, 'leave') }
+				<button onClick={() => {
+					props.clickAPI(game.id, 'leave');
+					props.clickBackToRooms();
+				}}
 				type="button" className="btn btn-secondary">Leave
 				</button>
 				<button onClick={() => props.clickAPI(game.id, 'surrender') }
@@ -50,7 +53,7 @@ const GamePage = (props) => {
 				</button>
 			</div>
 			<br/>
-			<div className="container">
+			<div>
 			<Board 
 			gameData={game}
 			clickCell={props.clickCell}
